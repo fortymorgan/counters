@@ -4,7 +4,7 @@ function createButton(text) {
     return button;
 }
 
-function createCounter() {
+function createCounter(id) {
     const counter = document.createElement('div');
     const value = document.createElement('span');
     const decButton = createButton('-');
@@ -12,7 +12,7 @@ function createCounter() {
     const delButton = createButton('x');
     const autoIncCheckbox = document.createElement('input');
     autoIncCheckbox.type = 'checkbox';
-    autoIncCheckbox.id = Date.now();
+    autoIncCheckbox.id = `checkbox-${id}`;
     const checkboxLabel = document.createElement('label');
     checkboxLabel.htmlFor = autoIncCheckbox.id;
     checkboxLabel.innerText = 'Auto increment';
@@ -54,4 +54,4 @@ function createCounter() {
 }
 
 
-document.getElementById('add-counter').addEventListener('click', createCounter);
+document.getElementById('add-counter').addEventListener('click', () => createCounter(Date.now()));
