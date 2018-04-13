@@ -16,13 +16,23 @@ function createCounter(id) {
     const checkboxLabel = document.createElement('label');
     checkboxLabel.htmlFor = autoIncCheckbox.id;
     checkboxLabel.innerText = 'Auto increment';
-    [value, decButton, incButton, delButton, autoIncCheckbox, checkboxLabel].forEach(e => counter.appendChild(e));
+    const autoIncFreqRange = document.createElement('input');
+    autoIncFreqRange.type = 'range';
+    autoIncFreqRange.id = `range-${id}`
+    autoIncFreqRange.min = 1;
+    autoIncFreqRange.max = 10;
+    autoIncFreqRange.value = 1;
+    const rangeLabel = document.createElement('label');
+    rangeLabel.htmlFor = autoIncFreqRange.id;
+    [value, decButton, incButton, delButton, autoIncCheckbox, 
+        checkboxLabel, autoIncFreqRange, rangeLabel].forEach(e => counter.appendChild(e));
     document.body.appendChild(counter);
     delButton.addEventListener('click', () => counter.remove());
 
     const state = {
         counterValue: 0,
-        intervalId: null
+        intervalId: null,
+        incFrequency: 1
     }
 
     const incWithRender = withRender(() => state.counterValue += 1);
@@ -33,16 +43,28 @@ function createCounter(id) {
 
     autoIncCheckbox.addEventListener('change', () => {
         if (autoIncCheckbox.checked) {
-            state.intervalId = setInterval(incWithRender, 300);
+            state.intervalId = setInterval(incWithRender, 1000 / state.incFrequency);
         } else {
             clearInterval(state.intervalId);
+            state.intervalId = null;
         }
     });
+
+    autoIncFreqRange.addEventListener('input', () => {
+        state.incFrequency = autoIncFreqRange.value;
+        if (state.intervalId !== null) {
+            clearInterval(state.intervalId);
+            state.intervalId = setInterval(incWithRender, 1000 / state.incFrequency);
+        } else {
+            render();
+        }
+    })
 
     render();
 
     function render() {
         value.innerText = state.counterValue;
+        rangeLabel.innerText = autoIncFreqRange.value;
     }
 
     function withRender(action) {
