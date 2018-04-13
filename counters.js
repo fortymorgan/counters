@@ -1,32 +1,21 @@
-function createButton(text) {
-    const button = document.createElement('button');
-    button.innerText = text;
-    return button;
-}
-
 function createCounter(id) {
     const counter = document.createElement('div');
-    const value = document.createElement('span');
-    const decButton = createButton('-');
-    const incButton = createButton('+');
-    const delButton = createButton('x');
-    const autoIncCheckbox = document.createElement('input');
-    autoIncCheckbox.type = 'checkbox';
-    autoIncCheckbox.id = `checkbox-${id}`;
-    const checkboxLabel = document.createElement('label');
-    checkboxLabel.htmlFor = autoIncCheckbox.id;
-    checkboxLabel.innerText = 'Auto increment';
-    const autoIncFreqRange = document.createElement('input');
-    autoIncFreqRange.type = 'range';
-    autoIncFreqRange.id = `range-${id}`
-    autoIncFreqRange.min = 1;
-    autoIncFreqRange.max = 10;
-    autoIncFreqRange.value = 1;
-    const rangeLabel = document.createElement('label');
-    rangeLabel.htmlFor = autoIncFreqRange.id;
-    [value, decButton, incButton, delButton, autoIncCheckbox, 
-        checkboxLabel, autoIncFreqRange, rangeLabel].forEach(e => counter.appendChild(e));
+    counter.innerHTML = `<span id="value-${id}"></span>
+        <button id="dec-${id}">-</button>
+        <button id="inc-${id}">+</button>
+        <button id="del-${id}">x</button>
+        <input type="checkbox" id="checkbox-${id}">
+        <label for="checkbox-${id}">Auto increment</label>
+        <input type="range" id="range-${id}" min="1" max="10" value="1">
+        <label for="range-${id}" id="range-label-${id}"></label>`
     document.body.appendChild(counter);
+    const value = getElement('value');
+    const decButton = getElement('dec');
+    const incButton = getElement('inc');
+    const delButton = getElement('del');
+    const autoIncCheckbox = getElement('checkbox');
+    const autoIncFreqRange = getElement('range');
+    const rangeLabel = getElement('range-label');
     delButton.addEventListener('click', () => counter.remove());
 
     const state = {
@@ -72,6 +61,10 @@ function createCounter(id) {
             action();
             render();
         }
+    }
+
+    function getElement(prefix) {
+        return document.getElementById(`${prefix}-${id}`);
     }
 }
 
