@@ -13,13 +13,13 @@ function addCounter(id) {
     
     document.body.appendChild(counter);
 
-    const delButton = document.getElementById(`del-${id}`);
-    const decButton = document.getElementById(`dec-${id}`);
-    const incButton = document.getElementById(`inc-${id}`);
-    const valueDisplay = document.getElementById(`value-${id}`);
-    const autoIncrementToggle = document.getElementById(`checkbox-${id}`);
-    const frequencySelection = document.getElementById(`range-${id}`);
-    const frequencyDisplay = document.getElementById(`label-${id}`)
+    const delButton = getElement('del');
+    const decButton = getElement('dec');
+    const incButton = getElement('inc');
+    const valueDisplay = getElement('value');
+    const autoIncrementToggle = getElement('checkbox');
+    const frequencySelection = getElement('range');
+    const frequencyDisplay = getElement('label');
     
     delButton.addEventListener('click', () => counter.remove());
     
@@ -71,6 +71,10 @@ function addCounter(id) {
     function stopInterval() {
         clearInterval(state.intervalId);
         state.intervalId = null;
+    }
+
+    function getElement(prefix) {
+        return document.getElementById(`${prefix}-${id}`);
     }
     
     render();
