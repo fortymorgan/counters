@@ -1,8 +1,8 @@
 function addCounter(id) {
-    const div = document.createElement('div');
-    div.id = `counter-${id}`;
+    const counter = document.createElement('div');
+    counter.id = `counter-${id}`;
 
-    div.innerHTML = `<span id="value-${id}"></span>
+    counter.innerHTML = `<span id="value-${id}"></span>
     <button id="dec-${id}">-</button>
     <button id="inc-${id}">+</button>
     <button id="del-${id}">x</button>
@@ -11,22 +11,22 @@ function addCounter(id) {
     <input type="range" id="range-${id}" min="1" max="10" value="1">
     <label for="range-${id}" id="label-${id}"></label>`
     
-    document.body.appendChild(div);
+    document.body.appendChild(counter);
 
     const delButton = document.getElementById(`del-${id}`);
     const decButton = document.getElementById(`dec-${id}`);
     const incButton = document.getElementById(`inc-${id}`);
-    const valueField = document.getElementById(`value-${id}`);
-    const checkAutoInc = document.getElementById(`checkbox-${id}`);
-    const autoIncFreqRange = document.getElementById(`range-${id}`);
-    const incFreqValue = document.getElementById(`label-${id}`)
+    const valueDisplay = document.getElementById(`value-${id}`);
+    const autoIncrementToggle = document.getElementById(`checkbox-${id}`);
+    const frequencySelection = document.getElementById(`range-${id}`);
+    const frequencyDisplay = document.getElementById(`label-${id}`)
     
-    delButton.addEventListener('click', () => div.remove());
+    delButton.addEventListener('click', () => counter.remove());
     
     const state = {
         value: 0,
-        intervalID: null,
-        autoIncFreq: 1,
+        intervalId: null,
+        frequency: 1,
     }
     
     const incWithRender = withRender(() => state.value += 1)
@@ -35,26 +35,26 @@ function addCounter(id) {
     decButton.addEventListener('click', decWithRender)    
     incButton.addEventListener('click', incWithRender)
     
-    checkAutoInc.addEventListener('change', () => {
-        if (checkAutoInc.checked) {
+    autoIncrementToggle.addEventListener('change', () => {
+        if (autoIncrementToggle.checked) {
             startInterval();
         } else {
             stopInterval();
         }
     })
     
-    autoIncFreqRange.addEventListener('input', () => {
-        state.autoIncFreq = autoIncFreqRange.value;
+    frequencySelection.addEventListener('input', () => {
+        state.frequency = frequencySelection.value;
         render();
-        if (state.intervalID !== null) {
+        if (state.intervalId !== null) {
             stopInterval();
             startInterval();
         }
     })
     
     function render() {
-        valueField.innerText = state.value;
-        incFreqValue.innerText = state.autoIncFreq;
+        valueDisplay.innerText = state.value;
+        frequencyDisplay.innerText = state.frequency;
     }
         
     function withRender(action) {
@@ -65,17 +65,17 @@ function addCounter(id) {
     }
     
     function startInterval() {
-        state.intervalID = setInterval(incWithRender, 1000 / state.autoIncFreq);
+        state.intervalId = setInterval(incWithRender, 1000 / state.frequency);
     }
     
     function stopInterval() {
-        clearInterval(state.intervalID);
-        state.intervalID = null;
+        clearInterval(state.intervalId);
+        state.intervalId = null;
     }
     
     render();
 }
 
-let iForId = 0;
+let nextCounterId = 0;
 
-document.getElementById("add-counter").addEventListener('click', () => addCounter(iForId++));
+document.getElementById("add-counter").addEventListener('click', () => addCounter(nextCounterId++));
