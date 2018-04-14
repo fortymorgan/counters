@@ -1,5 +1,6 @@
 function createCounter(id) {
     const counter = document.createElement('div');
+
     counter.innerHTML = `<span id="value-${id}"></span>
         <button id="dec-${id}">-</button>
         <button id="inc-${id}">+</button>
@@ -8,7 +9,9 @@ function createCounter(id) {
         <label for="checkbox-${id}">Auto increment</label>
         <input type="range" id="range-${id}" min="1" max="10" value="1">
         <label for="range-${id}" id="range-label-${id}"></label>`
+
     document.body.appendChild(counter);
+
     const value = getElement('value');
     const decButton = getElement('dec');
     const incButton = getElement('inc');
@@ -16,6 +19,7 @@ function createCounter(id) {
     const autoIncCheckbox = getElement('checkbox');
     const autoIncFreqRange = getElement('range');
     const rangeLabel = getElement('range-label');
+    
     delButton.addEventListener('click', () => counter.remove());
 
     const state = {
